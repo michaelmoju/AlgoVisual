@@ -47,10 +47,10 @@ public class UserLogInPanel extends JFrame{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String username = usernameText.getText();
-				String password = passwordText.getText();			
+				String name = usernameText.getText();
+				String pwd = passwordText.getText();			
 				
-				if (LogInServer.login(username, password)) {
+				if (LogInServer.login(name, pwd)) {
 					System.out.println("login successfully");
 					MainPanel mainPanel = new MainPanel();
 					mainPanel.setVisible(true);
