@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import server.LogInServer;
+import server.UserDb;
 
 public class UserLogInPanel extends JFrame{
 	private JLabel messageLabel;
@@ -16,8 +16,10 @@ public class UserLogInPanel extends JFrame{
 	private JTextField passwordText;
 	private JButton loginButton;
 	private JButton registerButton;
+	private UserDb db;
 	
 	public UserLogInPanel() {
+		db = new UserDb();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBackground(Color.LIGHT_GRAY);
 		setSize(600,200);
@@ -50,7 +52,7 @@ public class UserLogInPanel extends JFrame{
 				String name = usernameText.getText();
 				String pwd = passwordText.getText();			
 				
-				if (LogInServer.login(name, pwd)) {
+				if (db.login(name, pwd)) {
 					System.out.println("login successfully");
 					MainPanel mainPanel = new MainPanel();
 					mainPanel.setVisible(true);
