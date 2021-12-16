@@ -1,14 +1,16 @@
 package sort;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-public class SortPanel extends JFrame{
+public class SortPanel extends JPanel{
 	public final int MAX_VALUE = 100;
-	public final int MIN_VALUE = -99;
+	public final int MIN_VALUE = 0;
 	private int arrLength;
 	private String algo;
 	private JLabel arrText = new JLabel();
@@ -18,17 +20,17 @@ public class SortPanel extends JFrame{
 
 	
 	public SortPanel(String algo, int arrLength) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.algo = algo;
 		this.arrLength = arrLength;
 		initArr = new int[arrLength];
 		arr = new int[arrLength];
-		setSize(700,50);
+		this.setSize(700,200);
 		
 		// set initial random array
 		setRandomArr();
 		setArrText();
-		this.add(arrText);
+		this.add(arrText, BorderLayout.CENTER);
 		
 	}
 	
