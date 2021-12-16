@@ -81,10 +81,10 @@ public class UserLogInPanel extends JFrame{
 					
 					ObjectInputStream fromServer = new ObjectInputStream(socket.getInputStream());
 					ServerResponse response = (ServerResponse)fromServer.readObject();
-					
+					System.out.println(response.getIsLogin());
 					if (response.getIsLogin()) {
 						System.out.println("login successfully");
-						MainPanel mainPanel = new MainPanel(response.getProgress());
+						MainPanel mainPanel = new MainPanel(response.getProgress(), socket);
 						mainPanel.setVisible(true);
 						setVisible(false);
 					} else {
@@ -97,7 +97,7 @@ public class UserLogInPanel extends JFrame{
 					
 				} catch (IOException e1) {
 					e1.printStackTrace();
-				} catch (ClassNotFoundException e1) {
+				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -111,6 +111,35 @@ public class UserLogInPanel extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String name = usernameText.getText();
 				String pwd = passwordText.getText();
+				
+				try {
+					ObjectOutputStream toServer = new ObjectOutputStream(socket.getOutputStream());
+					ClientRequest action = new ClientRequest("login", name, pwd);
+					toServer.writeObject(action);
+					toServer.flush();
+					
+					ObjectInputStream fromServer = new ObjectInputStream(socket.getInputStream());
+					ServerResponse response = (ServerResponse)fromServer.readObject();
+					System.out.println(response.getIsLogin());
+					if (response.getIsLogin()) {
+						System.out.println("Register successfully");
+						MainPanel mainPanel = new MainPanel(response.getProgress(), socket);
+						mainPanel.setVisible(true);
+						setVisible(false);
+					} else {
+						System.out.println("Register wrong");
+						messageLabel.setText("incorrect username or password");
+						messageLabel.setForeground(Color.red);
+						usernameText.setText("");
+						passwordText.setText("");
+					}
+					
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 //				if (db.signup(name, pwd)) {
 //					System.out.println("Sign up successfully");

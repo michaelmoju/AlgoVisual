@@ -8,6 +8,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -21,6 +24,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import sort.SortPanel;
+import server.ClientRequest;
 import server.ServerResponse;
 
 public class MainPanel extends JFrame{
@@ -29,9 +33,13 @@ public class MainPanel extends JFrame{
 	private JPanel buttonPanel;
 	private JPanel progressPanel;
 	private JPanel playPanel;
-	private HashMap<String, Boolean> progressMap;
+	private HashMap<String, Boolean> progress;
+	private Socket socket;
+	private String name;
+	private String pwd;
 	
-	public MainPanel() {
+	public MainPanel(Socket socket) {
+		this.socket=socket;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(700, 200);
 		this.setLayout(new BorderLayout());
@@ -45,9 +53,9 @@ public class MainPanel extends JFrame{
 		this.add(AlgoPanel, BorderLayout.CENTER);
 	}
 	
-	public MainPanel(HashMap<String, Boolean> progressMap) {
-		this();
-		this.progressMap = progressMap;
+	public MainPanel(HashMap<String, Boolean> progressMap, Socket socket) {
+		this(socket);
+		this.progress = progressMap;
 		createProgressPanel();
 		createPlayPanel();
 	}
@@ -64,12 +72,12 @@ public class MainPanel extends JFrame{
 		//map algo	
 		for (String algoName: algoNames) {
 			JCheckBox algoBox = new JCheckBox(algoName);
-			algoBox.setSelected(this.progressMap.get(algoName));
+			algoBox.setSelected(this.progress.get(algoName));
 			algoBox.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent e) {
-					if (e.getStateChange()==1) progressMap.put(algoName, true);
-					else progressMap.put(algoName, false);
-					System.out.println(progressMap);
+					if (e.getStateChange()==1) progress.put(algoName, true);
+					else progress.put(algoName, false);
+					System.out.println(progress);
 					}
 				}
 			);
@@ -92,9 +100,25 @@ public class MainPanel extends JFrame{
 			}
 		}
 		
+		class StoreActionListener implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+				ObjectOutputStream toServer;
+				try {
+					toServer = new ObjectOutputStream(socket.getOutputStream());
+					ClientRequest action = new ClientRequest("store", name, pwd, progress);
+					toServer.writeObject(action);
+					toServer.flush();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		}
+		
 		//main menu
 		JMenuItem loginItem = new JMenuItem("Log in");
-		JMenuItem LogoutItem = new JMenuItem("Log out");
+		JMenuItem StoreItem = new JMenuItem("Store");
 		JMenuItem fileExitItem = new JMenuItem("Exit");
 		
 		loginItem.addActionListener(new LoginActionListener());

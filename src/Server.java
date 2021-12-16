@@ -86,7 +86,6 @@ public class Server extends JFrame implements Runnable{
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-			
 		}
 		
 	}
