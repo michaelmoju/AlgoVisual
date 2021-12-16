@@ -28,11 +28,8 @@ public class UserLogInPanel extends JFrame{
 	private JTextField passwordText;
 	private JButton loginButton;
 	private JButton registerButton;
-	private UserDb db;
-	private Socket socket;
 	
 	public UserLogInPanel() {
-		db = new UserDb();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBackground(Color.LIGHT_GRAY);
 		setSize(600,200);
@@ -55,15 +52,6 @@ public class UserLogInPanel extends JFrame{
 		// buttons
 		createButton();
 		
-		//socket
-		try {
-			socket = new Socket("localhost", 8000);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
 	}
 	
 	private void createButton() {
@@ -75,6 +63,7 @@ public class UserLogInPanel extends JFrame{
 				String pwd = passwordText.getText();
 
 				try {
+					Socket socket = new Socket("localhost", 8000);
 					ObjectOutputStream toServer = new ObjectOutputStream(socket.getOutputStream());
 					ClientRequest action = new ClientRequest("login", name, pwd);
 					toServer.writeObject(action);
@@ -82,7 +71,7 @@ public class UserLogInPanel extends JFrame{
 					
 					ObjectInputStream fromServer = new ObjectInputStream(socket.getInputStream());
 					ServerResponse response = (ServerResponse)fromServer.readObject();
-					System.out.println(response.getIsLogin());
+//					System.out.println(response.getIsLogin());
 					if (response.getIsLogin()) {
 						System.out.println("login successfully");
 						MainPanel mainPanel = new MainPanel(response.getProgress(), socket);
@@ -99,7 +88,6 @@ public class UserLogInPanel extends JFrame{
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -114,6 +102,7 @@ public class UserLogInPanel extends JFrame{
 				String pwd = passwordText.getText();
 				
 				try {
+					Socket socket = new Socket("localhost", 8000);
 					ObjectOutputStream toServer = new ObjectOutputStream(socket.getOutputStream());
 					ClientRequest action = new ClientRequest("login", name, pwd);
 					toServer.writeObject(action);
@@ -138,7 +127,6 @@ public class UserLogInPanel extends JFrame{
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
