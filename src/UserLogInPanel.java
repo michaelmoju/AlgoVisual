@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import server.UserDb;
 import server.ClientRequest;
@@ -38,17 +39,17 @@ public class UserLogInPanel extends JFrame{
 		this.setLayout(new GridLayout(4,2));
 		
 		//message
-		messageLabel = new JLabel("Pleas enter your: ");
+		messageLabel = new JLabel("Please enter your ", SwingConstants.CENTER);
 		this.add(messageLabel);
-		this.add(new JLabel("null"));
+		this.add(new JLabel(""));
 		
 		//text fields
 		usernameText = new JTextField();
 		passwordText = new JTextField();
 
-		this.add(new JLabel("Username: "));
+		this.add(new JLabel("Username: ", SwingConstants.CENTER));
 		this.add(usernameText);
-		this.add(new JLabel("Password: "));
+		this.add(new JLabel("Password: ", SwingConstants.CENTER));
 		this.add(passwordText);
 		
 		// buttons
@@ -140,18 +141,6 @@ public class UserLogInPanel extends JFrame{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-//				if (db.signup(name, pwd)) {
-//					System.out.println("Sign up successfully");
-//					MainPanel mainPanel = new MainPanel();
-//					mainPanel.setVisible(true);
-//				} else {
-//					System.out.println("Sign up wrong");
-//					messageLabel.setText("Username or password already been used");
-//					messageLabel.setForeground(Color.red);
-//					usernameText.setText("");
-//					passwordText.setText("");
-//				}
 			}
 			
 		}

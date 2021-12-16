@@ -28,7 +28,7 @@ import server.ClientRequest;
 import server.ServerResponse;
 
 public class MainPanel extends JFrame{
-	private JPanel AlgoPanel;
+	private JPanel AlgoPanel; ///
 	private JMenuBar menuBar;
 	private JPanel buttonPanel;
 	private JPanel progressPanel;
@@ -49,7 +49,7 @@ public class MainPanel extends JFrame{
 		this.setJMenuBar(menuBar);
 		
 		// AlgoPanel
-		AlgoPanel = new SortPanel("bubble", 10);
+		AlgoPanel = new SortPanel("bubble", 10); /////
 		this.add(AlgoPanel, BorderLayout.CENTER);
 	}
 	
@@ -91,14 +91,14 @@ public class MainPanel extends JFrame{
 	
 	private void createMenuBar() {
 		menuBar = new JMenuBar();  
-		JMenu progressMenu = new JMenu("AlgoVisual");
+		JMenu progressMenu = new JMenu("My Progress");
 		JMenu algoMenu = new JMenu("Algorithms");
 		JMenu setMenu = new JMenu("Settings");
 		
-		class LoginActionListener implements ActionListener {
-			public void actionPerformed(ActionEvent e) {
-			}
-		}
+//		class LoginActionListener implements ActionListener {
+//			public void actionPerformed(ActionEvent e) {
+//			}
+//		}
 		
 		class StoreActionListener implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
@@ -117,14 +117,16 @@ public class MainPanel extends JFrame{
 		}
 		
 		//main menu
-		JMenuItem loginItem = new JMenuItem("Log in");
+//		JMenuItem loginItem = new JMenuItem("Log in");
 		JMenuItem StoreItem = new JMenuItem("Store");
 		JMenuItem fileExitItem = new JMenuItem("Exit");
 		
-		loginItem.addActionListener(new LoginActionListener());
+//		loginItem.addActionListener(new LoginActionListener());
+		StoreItem.addActionListener(new StoreActionListener());
 		fileExitItem.addActionListener((e) -> System.exit(0));
 		
-		progressMenu.add(loginItem);
+//		progressMenu.add(loginItem);
+		progressMenu.add(StoreItem);
 		progressMenu.add(fileExitItem);
 		
 		// algorithms

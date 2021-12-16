@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import server.ServerResponse;
@@ -110,6 +111,29 @@ public class UserDb {
 	public ServerResponse store(String name, String pwd, HashMap<String, Boolean> progress) {
 		return null;
 	}
+	
+	public String show_all() {
+	ArrayList<String> StringArray = new ArrayList<String>();
+	String query = "select * from userinfo";
+	try (Statement stmt = conn.createStatement()) {
+		ResultSet rs = stmt.executeQuery(query);
+		while (rs.next()) {
+			String name = rs.getString("name");
+			String progress = (String)rs.getString("progress");
+			StringArray.add(name + ',' + progress + '\n');
+		}
+		
+		String s = new String();
+		for(String ele:StringArray) {
+            s += ele;
+        }
+		return s;
+		
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	return "";
+}
 	
 	
 	public static void main(String[] args) {

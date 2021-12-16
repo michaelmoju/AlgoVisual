@@ -25,5 +25,4 @@ public class insertion {
             arr[i+1] = key;
         }
 	}
-
 }

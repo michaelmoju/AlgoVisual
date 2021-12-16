@@ -92,7 +92,25 @@ public class Server extends JFrame implements Runnable{
 	
 	public static void main(String[] args) {
 		Server s = new Server();
+		
+		final int AREA_ROWS = 10;
+		final int AREA_COLUMNS = 30;
+
+		final JTextArea textArea = new JTextArea(AREA_ROWS, AREA_COLUMNS);
+	    textArea.setEditable(false);
+		JScrollPane scrollPane = new JScrollPane(textArea);
+		
+		textArea.append(s.db.show_all());
+		
+		s.add(scrollPane);
+		
+		s.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+	    s.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		s.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		s.setVisible(true);
 	}
+	
+	private static final int FRAME_WIDTH = 400;
+	private static final int FRAME_HEIGHT = 200;
 }

@@ -3,11 +3,20 @@ package sort;
 import java.awt.Color;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import server.ClientRequest;
+import server.ServerResponse;
 
 public class SortPanel extends JPanel{
 	public final int MAX_VALUE = 100;
@@ -17,6 +26,7 @@ public class SortPanel extends JPanel{
 	private JLabel arrText = new JLabel();
 	private int[] initArr = new int[arrLength];
 	private int[] arr = new int[arrLength];
+	private JButton StepButton;
 //	private int[] changedList = new ArrayList<>();
 
 	
@@ -27,6 +37,8 @@ public class SortPanel extends JPanel{
 		initArr = new int[arrLength];
 		arr = new int[arrLength];
 		this.setSize(700,200);
+		
+		createButton();
 		
 		// set initial random array
 		setRandomArr();
@@ -64,7 +76,29 @@ public class SortPanel extends JPanel{
 		
 	}
 	
+	public void step() {
+		System.out.println("Y");
+	}
+	
+	private void createButton() {
+		class StepListener implements ActionListener {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				step();					
+			} 
+		}	
+		
+		StepButton = new JButton("Next Step");
+		StepButton.addActionListener(new StepListener());
+		
+		this.add(StepButton);
+	}
+	
 	public static void main(String[] args) {
+		//Add JLabel, when finishing running, show "End"
+		
+		
 		SortPanel sortPanel = new SortPanel("test", 10);
 		sortPanel.setVisible(true);
 	}
