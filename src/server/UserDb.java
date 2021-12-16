@@ -1,5 +1,8 @@
 package server;
 import java.sql.*;
+import java.util.HashMap;
+
+import server.ServerResponse;
 
 public class UserDb {
 		private Connection conn;
@@ -7,14 +10,14 @@ public class UserDb {
 	
 	public UserDb() {		
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/JavaProject", "root", "sandy870531");
+			conn = DriverManager.getConnection("jdbc:sqlite:record.db");
 		}
 		catch (Exception exc) {
 			exc.printStackTrace();
 		}
 	}
 	
-	public boolean login(String name, String pwd) {
+	public ServerResponse login(String name, String pwd) {
 		try {
 			PreparedStatement ppStatement = conn.prepareStatement("select * from userinfo where name = ? and pwd = ?");
 			
@@ -23,48 +26,52 @@ public class UserDb {
 			ResultSet RS = ppStatement.executeQuery();
 			
 			if (RS.next()) {
-				System.out.println("User ID: " + RS.getString("ID") + ", Name: " + RS.getString("Name") + ", Progress: " + RS.getString("Progress"));
-				return true;
+				//System.out.println("User ID: " + RS.getString("ID") + ", Name: " + RS.getString("Name") + ", Progress: " + RS.getString("Progress"));
+				return new ServerResponse(true);
 			}
-	        return false;
+	        return new ServerResponse(false);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return new ServerResponse(false);
 		
 	}
 	
-	public boolean signup(String name, String pwd) {
-		try {
-			PreparedStatement ppStatement_name = conn.prepareStatement("select * from userinfo where name = ?");
-			PreparedStatement ppStatement_pwd = conn.prepareStatement("select * from userinfo where pwd = ?");
 
-			ppStatement_name.setString(1, name);
-			ppStatement_pwd.setString(1, pwd);
-			
-			ResultSet RS_name = ppStatement_name.executeQuery();
-			ResultSet RS_pwd = ppStatement_pwd.executeQuery();
-			
-			if (RS_name.next()) {
+	public ServerResponse signup(String name, String pwd){
+		return null;
+		
+//		try {
+//		
+//			PreparedStatement ppStatement_name = conn.prepareStatement("select * from userinfo where name = ?");
+//			PreparedStatement ppStatement_pwd = conn.prepareStatement("select * from userinfo where pwd = ?");
+//	
+//			ppStatement_name.setString(1, name);
+//			ppStatement_pwd.setString(1, pwd);
+//			
+//			ResultSet RS_name = ppStatement_name.executeQuery();
+//			ResultSet RS_pwd = ppStatement_pwd.executeQuery();
+//			
+//			if (RS_name.next()) {
 //				System.out.println("Username already exists, please use another username.");
-				return false;
-			}
-			else if (RS_pwd.next()) {
+//				return new ServerResponse(false);
+//			}
+//			else if (RS_pwd.next()) {
 //				System.out.println("Password already exists, please use another password.");
-				return false;
-			}
-			else {
-				PreparedStatement ppStatement_insert = conn.prepareStatement("insert into userinfo(name, pwd, progress) value (?, ?, 0);");	
-				ppStatement_insert.setString(1, name);
-				ppStatement_insert.setString(2, pwd);
-				ppStatement_insert.executeUpdate();
-				return true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-        
+//				return new ServerResponse(false);
+//			}
+//			else {
+//				PreparedStatement ppStatement_insert = conn.prepareStatement("insert into userinfo(name, pwd, progress) value (?, ?, 0);");	
+//				ppStatement_insert.setString(1, name);
+//				ppStatement_insert.setString(2, pwd);
+//				ppStatement_insert.executeUpdate();
+//				return new ServerResponse(false);
+//			}
+//		}
+	}
+	
+	public ServerResponse store(String name, String pwd, HashMap<String, Boolean> progress) {
+		return null;
 	}
 	
 	

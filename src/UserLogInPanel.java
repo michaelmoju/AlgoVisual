@@ -1,14 +1,25 @@
 import java.awt.Color;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 import server.UserDb;
+import server.ClientRequest;
+import server.ServerResponse;
 
 public class UserLogInPanel extends JFrame{
 	private JLabel messageLabel;
@@ -17,6 +28,7 @@ public class UserLogInPanel extends JFrame{
 	private JButton loginButton;
 	private JButton registerButton;
 	private UserDb db;
+	private Socket socket;
 	
 	public UserLogInPanel() {
 		db = new UserDb();
@@ -42,6 +54,15 @@ public class UserLogInPanel extends JFrame{
 		// buttons
 		createButton();
 		
+		//socket
+		try {
+			socket = new Socket("localhost", 8000);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	private void createButton() {
@@ -50,18 +71,35 @@ public class UserLogInPanel extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = usernameText.getText();
-				String pwd = passwordText.getText();			
-				
-				if (db.login(name, pwd)) {
-					System.out.println("login successfully");
-					MainPanel mainPanel = new MainPanel();
-					mainPanel.setVisible(true);
-				} else {
-					System.out.println("login wrong");
-					messageLabel.setText("incorrect username or password");
-					messageLabel.setForeground(Color.red);
-					usernameText.setText("");
-					passwordText.setText("fff");
+				String pwd = passwordText.getText();
+
+				try {
+					ObjectOutputStream toServer = new ObjectOutputStream(socket.getOutputStream());
+					ClientRequest action = new ClientRequest("login", name, pwd);
+					toServer.writeObject(action);
+					toServer.flush();
+					
+					ObjectInputStream fromServer = new ObjectInputStream(socket.getInputStream());
+					ServerResponse response = (ServerResponse)fromServer.readObject();
+					
+					if (response.getIsLogin()) {
+						System.out.println("login successfully");
+						MainPanel mainPanel = new MainPanel(response.getProgress());
+						mainPanel.setVisible(true);
+						setVisible(false);
+					} else {
+						System.out.println("login wrong");
+						messageLabel.setText("incorrect username or password");
+						messageLabel.setForeground(Color.red);
+						usernameText.setText("");
+						passwordText.setText("");
+					}
+					
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			}
 			
@@ -74,17 +112,17 @@ public class UserLogInPanel extends JFrame{
 				String name = usernameText.getText();
 				String pwd = passwordText.getText();
 				
-				if (db.signup(name, pwd)) {
-					System.out.println("Sign up successfully");
-					MainPanel mainPanel = new MainPanel();
-					mainPanel.setVisible(true);
-				} else {
-					System.out.println("Sign up wrong");
-					messageLabel.setText("Username or password already been used");
-					messageLabel.setForeground(Color.red);
-					usernameText.setText("");
-					passwordText.setText("");
-				}
+//				if (db.signup(name, pwd)) {
+//					System.out.println("Sign up successfully");
+//					MainPanel mainPanel = new MainPanel();
+//					mainPanel.setVisible(true);
+//				} else {
+//					System.out.println("Sign up wrong");
+//					messageLabel.setText("Username or password already been used");
+//					messageLabel.setForeground(Color.red);
+//					usernameText.setText("");
+//					passwordText.setText("");
+//				}
 			}
 			
 		}
