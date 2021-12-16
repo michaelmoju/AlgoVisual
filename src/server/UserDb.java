@@ -29,11 +29,12 @@ public class UserDb {
 			ppStatement.setString(2, pwd);
 			ResultSet rs = ppStatement.executeQuery();
 			boolean isNext = rs.next();
-			
+			ServerResponse response = null;
+					
 			System.out.println(isNext);
 			if (!isNext) {
 				System.out.println("login fail");
-				return new ServerResponse(false);
+				response = new ServerResponse(false);
 			} else {
 				System.out.println("login successfully");
 				Object progressString = rs.getObject(1);
@@ -57,19 +58,19 @@ public class UserDb {
  					}
 					System.out.println(progress.getClass());
 					System.out.println(progress);
-					return new ServerResponse(true, progress);
+					response = new ServerResponse(true, progress);
 				} else {
 					System.err.println("progress class wrong!");
 				}
 				
 			}
+			
+			ppStatement.close();
+			rs.close();
+			return response;
 	        
 		} catch (SQLException e) {
 			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} catch (ClassNotFoundException e) {
-//			e.printStackTrace();
 		}
 		return new ServerResponse(false);
 		
@@ -85,21 +86,26 @@ public class UserDb {
 			ppStatement_name.setString(1, name);
 			
 			ResultSet RS_name = ppStatement_name.executeQuery();
+			ServerResponse response = null;
 			
 			if (RS_name.next()) {
 				System.out.println("Username already exists, please use another username.");
-				return new ServerResponse(false);
+				response = new ServerResponse(false);
 			} else {
 				System.out.println("signup successfully");
-				ServerResponse s = new ServerResponse(true);
+				response = new ServerResponse(true);
 				PreparedStatement ppStatement_insert = conn.prepareStatement(" insert into userinfo values (?, ?, ?);");	
 				ppStatement_insert.setString(1, name);
 				ppStatement_insert.setString(2, pwd);
-				System.out.println(s.getProgress().getClass());
-				ppStatement_insert.setObject(3, s.getProgress());;
+				System.out.println(response.getProgress().getClass());
+				ppStatement_insert.setObject(3, response.getProgress());;
 				ppStatement_insert.executeUpdate();
-				return s;
 			}
+			
+			ppStatement_name.close();
+			RS_name.close();
+			return response;
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

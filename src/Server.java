@@ -60,27 +60,27 @@ public class Server extends JFrame implements Runnable{
 						socket.getInputStream());
 				ObjectOutputStream outputToClient = new ObjectOutputStream(
 				          socket.getOutputStream());
-				
-				ClientRequest request = (ClientRequest)inputFromClient.readObject();
-				ServerResponse response = null;
-				
-				switch(request.getAction()) {
-				case "login": 
-					response = db.login(request.getName(), request.getPwd());
-					break;
-				case "register":
-					response = db.signup(request.getName(), request.getPwd());
-				case "store": {
-					response = db.store(request.getName(), request.getPwd(), request.getProgress());
-					break;
+				while (true) {
+					ClientRequest request = (ClientRequest)inputFromClient.readObject();
+					ServerResponse response = null;
+					
+					switch(request.getAction()) {
+					case "login": 
+						response = db.login(request.getName(), request.getPwd());
+						break;
+					case "register":
+						response = db.signup(request.getName(), request.getPwd());
+					case "store": {
+						response = db.store(request.getName(), request.getPwd(), request.getProgress());
+						break;
+					}
+					default: 
+						System.out.println("no action: " + request.getAction());
+						break;
+					}
+					
+					outputToClient.writeObject(response);
 				}
-				default: 
-					System.out.println("no action: " + request.getAction());
-					break;
-				}
-				
-				outputToClient.writeObject(response);
-				
 			} catch(IOException ex) {
 				ex.printStackTrace();
 			} catch (ClassNotFoundException e) {

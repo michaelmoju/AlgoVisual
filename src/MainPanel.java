@@ -144,14 +144,14 @@ public class MainPanel extends JFrame{
 	
 	}
 
-	public static void main(String[] args) {
-		HashMap progressMap = new HashMap<String, Boolean>();
-		
-		for (String algoName: ServerResponse.algoNames) {
-			progressMap.put(algoName, false);
-		}
-		MainPanel mainPanel = new MainPanel(progressMap);
-		mainPanel.setVisible(true);
-	}
+//	public static void main(String[] args) {
+//		HashMap progressMap = new HashMap<String, Boolean>();
+//		
+//		for (String algoName: ServerResponse.algoNames) {
+//			progressMap.put(algoName, false);
+//		}
+//		MainPanel mainPanel = new MainPanel(progressMap);
+//		mainPanel.setVisible(true);
+//	}
 
 }

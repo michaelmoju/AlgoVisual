@@ -45,23 +45,52 @@ public class SortPanel extends JPanel{
 	private void setArrText() {
 		StringBuilder builder = new StringBuilder();
 		
-		for (int i = 0; i < this.arrLength-1; i++) {
-			builder.append('[' + Integer.toString(arr[i]) + "] - ");
+		for (int i = 0; i < this.arrLength; i++) {
+			String intString = Integer.toString(arr[i]);
+			if (i == this.arrLength) builder.append('[' + intString + ']');
+			else builder.append('[' + intString + "] - ");
 		}
-		
-		// last integer
-		builder.append('[' + Integer.toString(arr[arrLength-1]) + ']');
 		
 		arrText.setText(builder.toString());
 	}
 	
+	private void setArrText(int changedIdx) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("<html>");
+		
+		for (int i = 0; i < this.arrLength; i++) {
+			String intString;
+			if (i == changedIdx) intString = "<font color='red'>" + Integer.toString(arr[i]) + "</font>";
+			else intString = Integer.toString(arr[i]);
+			if (i == this.arrLength) builder.append('[' + intString + ']');
+			else builder.append('[' + intString + "] - ");
+		}
+		
+		builder.append("</html>");
+		arrText.setText(builder.toString());
+	}
 	
-	public void play() {
+	public void over() {
 		
 	}
 	
-	public void reset() {
-		
+	
+	public void step() {
+		switch(this.algo) {
+		case "insertion": 
+			Insertion algoObject = new Insertion(this.arr);
+			int changedIdx = algoObject.step();
+			if (changedIdx == -1) {
+				this.arr = algoObject.getArr();
+				setArrText();
+				over();
+			} else {
+				this.arr = algoObject.getArr();
+				setArrText(changedIdx);
+			}
+			break;
+		}
+	
 	}
 	
 	public static void main(String[] args) {
