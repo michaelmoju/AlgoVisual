@@ -115,7 +115,39 @@ public class UserDb {
 	}
 	
 	public ServerResponse store(String name, String pwd, HashMap<String, Boolean> progress) {
-		return null;
+		PreparedStatement ppStatement_store;
+		try {
+			ServerResponse response = null;
+			ppStatement_store = conn.prepareStatement("UPDATE TABLE userinfo SET progress = ? where name = ?;");
+			response = new ServerResponse(true);
+			ppStatement_store.setString(1, name);
+			ppStatement_store.setObject(2, response.getProgress());
+			
+			ResultSet RS_store = ppStatement_store.executeQuery();
+//			ServerResponse response = null;
+			
+//			if (RS_store.next()) {
+//				System.out.println("Username already exists, please use another username.");
+//				response = new ServerResponse(false);
+//			} else {
+//				System.out.println("signup successfully");
+//				response = new ServerResponse(true);
+//				PreparedStatement ppStatement_insert = conn.prepareStatement(" insert into userinfo values (?, ?, ?);");	
+//				ppStatement_insert.setString(1, name);
+//				ppStatement_insert.setString(2, pwd);
+//				System.out.println(response.getProgress().getClass());
+//				ppStatement_insert.setObject(3, response.getProgress());;
+//				ppStatement_insert.executeUpdate();
+//			}
+			
+			ppStatement_store.close();
+			RS_store.close();
+			return response;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return new ServerResponse(false);
 	}
 	
 	public String show_all() {
