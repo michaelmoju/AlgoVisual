@@ -27,7 +27,7 @@ public class SortPanel extends JPanel{
 	private int[] initArr = new int[arrLength];
 	private int[] arr = new int[arrLength];
 	private JButton StepButton;
-//	private int[] changedList = new ArrayList<>();
+
 
 	
 	public SortPanel(String algo, int arrLength) {
@@ -104,28 +104,35 @@ public class SortPanel extends JPanel{
 	}
 	
 	public void step() {
+		SortAlgo algo;
+		int status;
+		
 		switch(this.algo) {
 		case "insertion": 
-			Insertion algoObject = new Insertion(this.arr);
-			int changedIdx = algoObject.step();
-			if (changedIdx == -1) {
-				this.arr = algoObject.getArr();
+			algo = new Insertion(this.arr);
+			status = algo.step();
+			if (status == -1) {
+				this.arr = algo.getArr();
 				setArrText();
 				over();
 			} else {
-				this.arr = algoObject.getArr();
-				setArrText(changedIdx);
+				this.arr = algo.getArr();
+				setArrText(algo.getI());
+			}
+			break;
+		case "bubble":
+			algo = new Bubble(this.arr);
+			status = algo.step();
+			if (status == -1) {
+				this.arr = algo.getArr();
+				setArrText();
+				over();
+			} else {
+				this.arr = algo.getArr();
+				setArrText(algo.getI());
 			}
 			break;
 		}
 	
-	}
-	
-	public static void main(String[] args) {
-		//Add JLabel, when finishing running, show "End"
-		
-		
-		SortPanel sortPanel = new SortPanel("test", 10);
-		sortPanel.setVisible(true);
 	}
 }
