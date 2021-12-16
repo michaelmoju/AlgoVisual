@@ -61,7 +61,7 @@ public class UserLogInPanel extends JFrame{
 					messageLabel.setText("incorrect username or password");
 					messageLabel.setForeground(Color.red);
 					usernameText.setText("");
-					passwordText.setText("");
+					passwordText.setText("fff");
 				}
 			}
 			
@@ -71,8 +71,20 @@ public class UserLogInPanel extends JFrame{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String username = usernameText.getText();
-				String password = passwordText.getText();
+				String name = usernameText.getText();
+				String pwd = passwordText.getText();
+				
+				if (db.signup(name, pwd)) {
+					System.out.println("Sign up successfully");
+					MainPanel mainPanel = new MainPanel();
+					mainPanel.setVisible(true);
+				} else {
+					System.out.println("Sign up wrong");
+					messageLabel.setText("Username or password already been used");
+					messageLabel.setForeground(Color.red);
+					usernameText.setText("");
+					passwordText.setText("");
+				}
 			}
 			
 		}

@@ -34,32 +34,36 @@ public class UserDb {
 		
 	}
 	
-	public boolean signup(String name, String pwd) throws SQLException {
-		
-		PreparedStatement ppStatement_name = conn.prepareStatement("select * from userinfo where name = ?");
-		PreparedStatement ppStatement_pwd = conn.prepareStatement("select * from userinfo where pwd = ?");
+	public boolean signup(String name, String pwd) {
+		try {
+			PreparedStatement ppStatement_name = conn.prepareStatement("select * from userinfo where name = ?");
+			PreparedStatement ppStatement_pwd = conn.prepareStatement("select * from userinfo where pwd = ?");
 
-		ppStatement_name.setString(1, name);
-		ppStatement_pwd.setString(1, pwd);
-		
-		ResultSet RS_name = ppStatement_name.executeQuery();
-		ResultSet RS_pwd = ppStatement_pwd.executeQuery();
-		
-		if (RS_name.next()) {
-			System.out.println("Username already exists, please use another username.");
-			return false;
+			ppStatement_name.setString(1, name);
+			ppStatement_pwd.setString(1, pwd);
+			
+			ResultSet RS_name = ppStatement_name.executeQuery();
+			ResultSet RS_pwd = ppStatement_pwd.executeQuery();
+			
+			if (RS_name.next()) {
+//				System.out.println("Username already exists, please use another username.");
+				return false;
+			}
+			else if (RS_pwd.next()) {
+//				System.out.println("Password already exists, please use another password.");
+				return false;
+			}
+			else {
+				PreparedStatement ppStatement_insert = conn.prepareStatement("insert into userinfo(name, pwd, progress) value (?, ?, 0);");	
+				ppStatement_insert.setString(1, name);
+				ppStatement_insert.setString(2, pwd);
+				ppStatement_insert.executeUpdate();
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		else if (RS_pwd.next()) {
-			System.out.println("Password already exists, please use another password.");
-			return false;
-		}
-		else {
-			PreparedStatement ppStatement_insert = conn.prepareStatement("insert into userinfo(name, pwd, progress) value (?, ?, 0);");	
-			ppStatement_insert.setString(1, name);
-			ppStatement_insert.setString(2, pwd);
-			ppStatement_insert.executeUpdate();
-			return true;
-		}
+		return false;
         
 	}
 	
@@ -67,7 +71,7 @@ public class UserDb {
 	public static void main(String[] args) {
 		UserDb myDatabase = new UserDb();
 		
-		myDatabase.login("Sandy", "sandy");
+		myDatabase.signup("New1", "new1");
 		
 	}
 }
