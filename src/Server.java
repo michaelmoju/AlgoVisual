@@ -63,7 +63,7 @@ public class Server extends JFrame implements Runnable{
 				while (true) {
 					ClientRequest request = (ClientRequest)inputFromClient.readObject();
 					ServerResponse response = null;
-					
+					System.out.println("action:: " + request.getAction());
 					switch(request.getAction()) {
 					case "login": 
 						response = db.login(request.getName(), request.getPwd());

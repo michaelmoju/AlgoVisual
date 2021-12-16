@@ -74,7 +74,7 @@ public class UserLogInPanel extends JFrame{
 //					System.out.println(response.getIsLogin());
 					if (response.getIsLogin()) {
 						System.out.println("login successfully");
-						MainPanel mainPanel = new MainPanel(response.getProgress(), socket);
+						MainPanel mainPanel = new MainPanel(name, pwd, response.getProgress());
 						mainPanel.setVisible(true);
 						setVisible(false);
 					} else {
@@ -113,7 +113,7 @@ public class UserLogInPanel extends JFrame{
 					System.out.println(response.getIsLogin());
 					if (response.getIsLogin()) {
 						System.out.println("Register successfully");
-						MainPanel mainPanel = new MainPanel(response.getProgress(), socket);
+						MainPanel mainPanel = new MainPanel(name, pwd, response.getProgress());
 						mainPanel.setVisible(true);
 						setVisible(false);
 					} else {

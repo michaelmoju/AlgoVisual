@@ -114,35 +114,42 @@ public class UserDb {
 		
 	}
 	
+//	public void delete(String name) {
+//		System.out.println("delete method name: " + name);
+//		try {
+//			String s = "delete from userinfo where name = " + "'" + name + "'";
+//			Statement stmt  = conn.createStatement();
+//			stmt.executeUpdate(s);
+//			stmt.close();
+//		} catch (SQLException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//	}
+//	
+//	public void insert(String name) {
+//		try {
+//			String s = "delete from userinfo where name = " + "'" + name + "'";
+//			Statement stmt  = conn.createStatement();
+//			stmt.executeUpdate(s);
+//
+//		} catch (SQLException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//	}
+	
 	public ServerResponse store(String name, String pwd, HashMap<String, Boolean> progress) {
-		PreparedStatement ppStatement_store;
+
 		try {
-			ServerResponse response = null;
-			ppStatement_store = conn.prepareStatement("UPDATE TABLE userinfo SET progress = ? where name = ?;");
-			response = new ServerResponse(true);
-			ppStatement_store.setString(1, name);
-			ppStatement_store.setObject(2, response.getProgress());
-			
-			ResultSet RS_store = ppStatement_store.executeQuery();
-//			ServerResponse response = null;
-			
-//			if (RS_store.next()) {
-//				System.out.println("Username already exists, please use another username.");
-//				response = new ServerResponse(false);
-//			} else {
-//				System.out.println("signup successfully");
-//				response = new ServerResponse(true);
-//				PreparedStatement ppStatement_insert = conn.prepareStatement(" insert into userinfo values (?, ?, ?);");	
-//				ppStatement_insert.setString(1, name);
-//				ppStatement_insert.setString(2, pwd);
-//				System.out.println(response.getProgress().getClass());
-//				ppStatement_insert.setObject(3, response.getProgress());;
-//				ppStatement_insert.executeUpdate();
-//			}
-			
-			ppStatement_store.close();
-			RS_store.close();
-			return response;
+			PreparedStatement ppStatement_store = conn.prepareStatement("UPDATE userinfo SET progress = ? where name = ?;");
+			ServerResponse response = new ServerResponse(true, progress);
+
+			ppStatement_store.setObject(1, response.getProgress());
+			ppStatement_store.setString(2, name);
+
+			ppStatement_store.executeUpdate();
+
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -177,8 +184,10 @@ public class UserDb {
 	public static void main(String[] args) {
 		UserDb myDatabase = new UserDb();
 		
-		myDatabase.signup("TEST6", "123");
-		myDatabase.login("TEST6", "123");
+//		myDatabase.signup("TEST6", "123");
+//		myDatabase.login("TEST6", "123");
+		
+//		myDatabase.delete("TEST6");
 		
 	}
 }
