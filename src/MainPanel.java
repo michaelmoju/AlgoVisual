@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,6 +19,7 @@ public class MainPanel extends JFrame{
 	private JPanel mainPanel;
 	private JMenuBar menuBar;
 	private JPanel buttonPanel;
+	private HashMap<String, Boolean> progressMap;
 	
 	public MainPanel() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -26,6 +28,11 @@ public class MainPanel extends JFrame{
 		// menubar
 		createMenuBar();
 		this.setJMenuBar(menuBar);
+	}
+	
+	public MainPanel(HashMap<String, Boolean> progressMap) {
+		this();
+		this.progressMap = progressMap;
 	}
 	
 	private void createMenuBar() {
