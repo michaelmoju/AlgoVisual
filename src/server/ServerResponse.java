@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class ServerResponse implements Serializable {
 	private Boolean isLogin;
 	private HashMap<String, Boolean> progress;
-	public static final String[] algoNames = {"Insertion_sort", "Bubble_sort", "Merge_sort"};
+	public static final String[] algoNames = {"Insertion_sort", "Bubble_sort"};
 	
 	public ServerResponse(Boolean isLogin) {
 		this.isLogin = isLogin;

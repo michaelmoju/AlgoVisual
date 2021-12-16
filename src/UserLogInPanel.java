@@ -104,13 +104,14 @@ public class UserLogInPanel extends JFrame{
 				try {
 					Socket socket = new Socket("localhost", 8000);
 					ObjectOutputStream toServer = new ObjectOutputStream(socket.getOutputStream());
-					ClientRequest action = new ClientRequest("login", name, pwd);
+					ClientRequest action = new ClientRequest("register", name, pwd);
 					toServer.writeObject(action);
 					toServer.flush();
 					
 					ObjectInputStream fromServer = new ObjectInputStream(socket.getInputStream());
 					ServerResponse response = (ServerResponse)fromServer.readObject();
-					System.out.println(response.getIsLogin());
+//					response.setIsLogin(true);
+//					System.out.println(response.getIsLogin());
 					if (response.getIsLogin()) {
 						System.out.println("Register successfully");
 						MainPanel mainPanel = new MainPanel(name, pwd, response.getProgress());
@@ -118,7 +119,7 @@ public class UserLogInPanel extends JFrame{
 						setVisible(false);
 					} else {
 						System.out.println("Register wrong");
-						messageLabel.setText("incorrect username or password");
+						messageLabel.setText("You cannot use the username");
 						messageLabel.setForeground(Color.red);
 						usernameText.setText("");
 						passwordText.setText("");

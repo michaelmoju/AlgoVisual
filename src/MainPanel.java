@@ -95,7 +95,7 @@ public class MainPanel extends JFrame{
 		menuBar = new JMenuBar();  
 		JMenu progressMenu = new JMenu("My Progress");
 		JMenu algoMenu = new JMenu("Algorithms");
-		JMenu setMenu = new JMenu("Settings");
+//		JMenu setMenu = new JMenu("Settings");
 
 		class StoreActionListener implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
@@ -172,7 +172,7 @@ public class MainPanel extends JFrame{
 		
 		menuBar.add(progressMenu);
 		menuBar.add(algoMenu);
-		menuBar.add(setMenu);
+//		menuBar.add(setMenu);
 		
 		//setting 
 	

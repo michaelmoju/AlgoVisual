@@ -2,6 +2,7 @@ import java.io.*;
 import java.net.*;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -12,6 +13,7 @@ import server.UserDb;
 public class Server extends JFrame implements Runnable{
 	private JTextArea resultBox;
 	private UserDb db;
+	private JLabel msg;
 	
 	public Server() {
 		super("Teacher Server");
@@ -26,6 +28,10 @@ public class Server extends JFrame implements Runnable{
 		
 		//connect database
 		this.db = new UserDb();
+		
+		// msg
+		this.msg = new JLabel("AAAAAAAAA");
+		this.add(this.msg);
 		
 		Thread t = new Thread(this);
 		t.start();
@@ -64,12 +70,14 @@ public class Server extends JFrame implements Runnable{
 					ClientRequest request = (ClientRequest)inputFromClient.readObject();
 					ServerResponse response = null;
 					System.out.println("action:: " + request.getAction());
+					msg.setText(request.getAction() + ", " + request.getName() + ", "+ request.getPwd() );
 					switch(request.getAction()) {
 					case "login": 
 						response = db.login(request.getName(), request.getPwd());
 						break;
 					case "register":
 						response = db.signup(request.getName(), request.getPwd());
+						break;
 					case "store": {
 						response = db.store(request.getName(), request.getPwd(), request.getProgress());
 						break;

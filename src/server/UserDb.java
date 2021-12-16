@@ -88,8 +88,9 @@ public class UserDb {
 			
 			ResultSet RS_name = ppStatement_name.executeQuery();
 			ServerResponse response = null;
-			
-			if (RS_name.next()) {
+			boolean isNext = RS_name.next();
+			System.out.print("isNext = " + isNext);
+			if (isNext) {
 				System.out.println("Username already exists, please use another username.");
 				response = new ServerResponse(false);
 			} else {
@@ -97,9 +98,9 @@ public class UserDb {
 				response = new ServerResponse(true);
 				PreparedStatement ppStatement_insert = conn.prepareStatement(" insert into userinfo values (?, ?, ?);");	
 				ppStatement_insert.setString(1, name);
-				ppStatement_insert.setString(2, pwd);
-				System.out.println(response.getProgress().getClass());
-				ppStatement_insert.setObject(3, response.getProgress());;
+				ppStatement_insert.setString(2, pwd);				
+
+				ppStatement_insert.setObject(3, response.getProgress()); 
 				ppStatement_insert.executeUpdate();
 			}
 			
@@ -184,7 +185,7 @@ public class UserDb {
 	public static void main(String[] args) {
 		UserDb myDatabase = new UserDb();
 		
-//		myDatabase.signup("TEST6", "123");
+//		myDatabase.signup("TEST10", "123");
 //		myDatabase.login("TEST6", "123");
 		
 //		myDatabase.delete("TEST6");
