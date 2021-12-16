@@ -51,7 +51,7 @@ public class MainPanel extends JFrame{
 		this.setJMenuBar(menuBar);
 		
 		// AlgoPanel
-		AlgoPanel = new SortPanel("bubble", 10); /////
+		AlgoPanel = new SortPanel("insertion", 10); /////"insertion", bubble
 		this.add(AlgoPanel, BorderLayout.CENTER);
 	}
 	
@@ -96,8 +96,7 @@ public class MainPanel extends JFrame{
 		JMenu progressMenu = new JMenu("My Progress");
 		JMenu algoMenu = new JMenu("Algorithms");
 		JMenu setMenu = new JMenu("Settings");
-		
-		
+
 		class StoreActionListener implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				ObjectOutputStream toServer;
@@ -124,7 +123,6 @@ public class MainPanel extends JFrame{
 //						passwordText.setText("");
 //					}
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
@@ -145,12 +143,31 @@ public class MainPanel extends JFrame{
 		progressMenu.add(fileExitItem);
 		
 		// algorithms
+		
 		JMenuItem bubbleSort = new JMenuItem("Bubble sort");
+		bubbleSort.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				remove(AlgoPanel);
+				AlgoPanel = new SortPanel("bubble", 10);
+				add(AlgoPanel, BorderLayout.CENTER);
+				validate();
+				repaint();
+			}
+		}
+		);
 		JMenuItem insertSort = new JMenuItem("Insertion sort");
-		JMenuItem mergeSort = new JMenuItem("Merge sort");
+		insertSort.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				remove(AlgoPanel);
+				AlgoPanel = new SortPanel("insertion", 10);
+				add(AlgoPanel, BorderLayout.CENTER);
+				validate();
+				repaint();
+			}
+		}
+		);
 		algoMenu.add(bubbleSort);
 		algoMenu.add(insertSort);
-		algoMenu.add(mergeSort);
 		
 		
 		menuBar.add(progressMenu);

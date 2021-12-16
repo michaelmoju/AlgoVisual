@@ -27,6 +27,8 @@ public class SortPanel extends JPanel{
 	private int[] initArr = new int[arrLength];
 	private int[] arr = new int[arrLength];
 	private JButton StepButton;
+	private SortAlgo sortAlgo;
+	private JLabel message;
 
 
 	
@@ -44,6 +46,18 @@ public class SortPanel extends JPanel{
 		setRandomArr();
 		setArrText();
 		this.add(arrText, BorderLayout.CENTER);
+		switch(algo) {
+		case "insertion": 
+			sortAlgo =  new Insertion(this.arr);
+			break;
+		case "bubble":
+			sortAlgo = new Bubble(this.arr);
+			break;
+		}
+		
+		//set message
+		message = new JLabel(this.algo + ": " + "Press Next Step");
+		this.add(message, BorderLayout.SOUTH);
 		
 	}
 	
@@ -59,11 +73,12 @@ public class SortPanel extends JPanel{
 		
 		for (int i = 0; i < this.arrLength; i++) {
 			String intString = Integer.toString(arr[i]);
-			if (i == this.arrLength) builder.append('[' + intString + ']');
+			if (i == this.arrLength-1) builder.append('[' + intString + ']');
 			else builder.append('[' + intString + "] - ");
 		}
 		
 		arrText.setText(builder.toString());
+		System.out.println(builder.toString());
 	}
 	
 	private void setArrText(int changedIdx) {
@@ -74,16 +89,17 @@ public class SortPanel extends JPanel{
 			String intString;
 			if (i == changedIdx) intString = "<font color='red'>" + Integer.toString(arr[i]) + "</font>";
 			else intString = Integer.toString(arr[i]);
-			if (i == this.arrLength) builder.append('[' + intString + ']');
+			if (i == this.arrLength-1) builder.append('[' + intString + ']');
 			else builder.append('[' + intString + "] - ");
 		}
 		
 		builder.append("</html>");
 		arrText.setText(builder.toString());
+//		System.out.println(builder.toString());
 	}
 	
 	public void over() {
-		
+		message.setText(this.algo + ": " +"Algorithm Done!!");
 	}
 	
 
@@ -104,32 +120,30 @@ public class SortPanel extends JPanel{
 	}
 	
 	public void step() {
-		SortAlgo algo;
 		int status;
 		
 		switch(this.algo) {
 		case "insertion": 
-			algo = new Insertion(this.arr);
-			status = algo.step();
+			status = sortAlgo.step();
 			if (status == -1) {
-				this.arr = algo.getArr();
+				this.arr = sortAlgo.getArr();
 				setArrText();
 				over();
 			} else {
-				this.arr = algo.getArr();
-				setArrText(algo.getI());
+				this.arr = sortAlgo.getArr();
+				setArrText(sortAlgo.getI());
 			}
 			break;
 		case "bubble":
-			algo = new Bubble(this.arr);
-			status = algo.step();
+			status = sortAlgo.step();
+			System.out.println(status);
 			if (status == -1) {
-				this.arr = algo.getArr();
+				this.arr = sortAlgo.getArr();
 				setArrText();
 				over();
 			} else {
-				this.arr = algo.getArr();
-				setArrText(algo.getI());
+				this.arr = sortAlgo.getArr();
+				setArrText(sortAlgo.getI());
 			}
 			break;
 		}

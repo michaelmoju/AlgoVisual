@@ -16,6 +16,7 @@ public class SortAlgo {
 	}
 	
 	public int step() {
+		System.out.println("SortAlgo step");
 		return 0;
 	}
 
