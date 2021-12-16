@@ -1,9 +1,9 @@
 package sort;
 
-public class Insertion extends SortAlgo{
+public class Bubble extends SortAlgo{
 	private int j;
 
-	public Insertion(int[] arr) {
+	public Bubble(int[] arr) {
 		super(arr);
 		this.j = 0;
 	}
